@@ -9,7 +9,7 @@ public class MarshallHousing {
 
     //Present a report listing the Manager’s name and telephone number for each hall of residence.
     public static void managerNamePhone(Statement stmt) throws SQLException {
-        String select = "select fName, lName, phoneNum from Staff As s, HallResidence As h WHERE s.staffID = h.staffID GROUP BY h.name";
+        String select = "select s.fName, s.lName, h.phoneNum from Staff As s, HallResidence As h WHERE s.staffID = h.staffID GROUP BY h.name";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -31,7 +31,7 @@ public class MarshallHousing {
 
     //Present a report listing the names and MU numbers of students with the details of their lease agreements
     public static void studentLeaseInfo(Statement stmt) throws SQLException {
-        String select = "SELECT fName, lName, muID, l.* FROM Student AS s, Lease AS l, WHERE s.muID = l.muID";
+        String select = "SELECT s.fName, s.lName, s.muID, l.* FROM Student AS s, Lease AS l, WHERE s.muID = l.muID";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -421,7 +421,7 @@ public class MarshallHousing {
                        "\n13. Display the total number of places in each residence hall." +
                        "\n14. Display the staff number, name, age, and current location of all members of the residence staff who are over 60 years old today." +
                        "\n15. Display the total number of registered vehicles in the particular parking lot" +
-                       "\n Enter quit to exit program!");
+                       "\nQuit - to exit program!");
                choice = in.nextLine();
                in.next();
 
