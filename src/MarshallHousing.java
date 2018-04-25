@@ -185,7 +185,7 @@ public class MarshallHousing {
 
     //Present a report of the names and MU numbers of students with their room number and place number in a particular hall of residence
     public static void studentFromHall(Statement stmt, String hallName) throws SQLException{
-        String select ="SELECT s.fName, s.lName, s.muID, r.placeNum, r.roomNum FROM HallResidence AS h WHERE h.name="+hallName+" JOIN Accommendation as A ON a.accmID = h.accmID JOIN Room AS r ON r.accmID = a.accmID JOIN Lease AS l ON l.placeNum = r.placeNum JOIN Student AS s ON s.muID = l.muID";
+        String select ="SELECT s.fName, s.lName, s.muID, r.placeNum, r.roomNum FROM HallResidence AS h WHERE h.name="+hallName+" JOIN Accommendation as A ON A.accmID = h.accmID JOIN Room AS r ON r.accmID = A.accmID JOIN Lease AS l ON l.placeNum = r.placeNum JOIN Student AS s ON s.muID = l.muID";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -383,7 +383,7 @@ public class MarshallHousing {
 
     //Display the total number of registered vehicles in the particular parking lot.
     public static void totalVehicals(Statement stmt, String lotName) throws SQLException{
-        String select = "SELECT COUNT(vin) AS totalVehicle FROM Vechicle AS v LEFT JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotName= " + lotName;
+        String select = "SELECT COUNT(vin) AS totalVehicle FROM Vechicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotName= " + lotName;
 
         ResultSet rset = stmt.executeQuery(select);
 
