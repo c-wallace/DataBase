@@ -316,7 +316,7 @@ public class MarshallHousing {
 
     //12. Display the minimum, maximum, and average monthly rent for rooms in residence halls
     public static void statsRent(Statement stmt) throws SQLException{
-        String select ="SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN Accommodation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
+        String select ="SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN accomedation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -333,12 +333,10 @@ public class MarshallHousing {
             System.out.println(myMin);
             ++rowCount;
         }
-        System.out.println("Total number of records = " + rowCount);
-    }
 
-    //Display the total number of places in each residence hall.
+        //Display the total number of places in each residence hall.
     public static void totalRooms(Statement stmt) throws SQLException{
-        String select = "SELECT COUNT (roomNum) AS myCount FROM Room AS r JOIN Accommodation AS a ON a.accmID = r.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP  BY h.name";
+        String select = "SELECT COUNT(roomNum)  AS myCount FROM Room AS r JOIN accomedation AS a ON a.accmID = r.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP  BY h.name";
 
         ResultSet rset = stmt.executeQuery(select);
 
