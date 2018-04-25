@@ -315,8 +315,8 @@ public class MarshallHousing {
     }
 
     //12. Display the minimum, maximum, and average monthly rent for rooms in residence halls
-    public static void statsRent(Statement stmt) throws SQLException{
-        String select ="SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN accomedation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
+    public static void statsRent(Statement stmt) throws SQLException {
+        String select = "SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN accomedation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -324,7 +324,7 @@ public class MarshallHousing {
         //  For each row, retrieve the contents of the cells with getXxx(columnName).
         System.out.println("The records selected are:");
         int rowCount = 0;
-        while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+        while (rset.next()) {   // Move the cursor to the next row, return false if no more row
             String myAvg = rset.getString("myAvg");
             System.out.println(myAvg);
             String myMax = rset.getString("myMax");
@@ -333,6 +333,7 @@ public class MarshallHousing {
             System.out.println(myMin);
             ++rowCount;
         }
+    }
 
         //Display the total number of places in each residence hall.
     public static void totalRooms(Statement stmt) throws SQLException{
