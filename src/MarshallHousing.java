@@ -8,7 +8,7 @@ import java.util.Date;
 public class MarshallHousing {
 
     //Present a report listing the Manager’s name and telephone number for each hall of residence.
-    public static void managerNamePhone(Statement stmt) throws SQLException {
+    private static void managerNamePhone(Statement stmt) throws SQLException {
         String select = "select s.fName, s.lName, h.phoneNum from Staff As s, HallResidence As h WHERE s.staffID = h.staffID GROUP BY h.name";
 
         ResultSet rset = stmt.executeQuery(select);
@@ -19,11 +19,11 @@ public class MarshallHousing {
         int rowCount = 0;
         while(rset.next()) {   // Move the cursor to the next row, return false if no more row
             String fName = rset.getString("fName");
-            System.out.println(fName);
+            System.out.println("First Name: " + fName);
             String lName = rset.getString("lName");
-            System.out.println(lName);
+            System.out.println("Last Name: "+ lName);
             String phoneNum = rset.getString("phoneNum");
-            System.out.println(phoneNum);
+            System.out.println("Phone Number: " + phoneNum);
             ++rowCount;
         }
         System.out.println("Total number of records = " + rowCount);
@@ -31,7 +31,7 @@ public class MarshallHousing {
 
     //Present a report listing the names and MU numbers of students with the details of their lease agreements
     public static void studentLeaseInfo(Statement stmt) throws SQLException {
-        String select = "SELECT s.fName, s.lName, s.muID, l.* FROM Student AS s, Lease AS l, WHERE s.muID = l.muID";
+        String select = "SELECT s.fName, s.lName, s.muID, l.* FROM Student AS s, Lease AS l WHERE s.muID = l.muID";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -41,23 +41,23 @@ public class MarshallHousing {
         int rowCount = 0;
         while(rset.next()) {   // Move the cursor to the next row, return false if no more row
             String fName = rset.getString("fName");
-            System.out.println(fName);
+            System.out.println("First Name: " + fName);
             String lName = rset.getString("lName");
-            System.out.println(lName);
+            System.out.println("Last Name: " + lName);
             int muID = rset.getInt("muID");
-            System.out.println(muID);
+            System.out.println("muID: " + muID);
             int leaseNum = rset.getInt("leaseNum");
-            System.out.println(leaseNum);
+            System.out.println("Lease Number: " + leaseNum);
             int rentalPeriod = rset.getInt("rentalPeriod");
-            System.out.println(rentalPeriod);
+            System.out.println("Rental Period: " + rentalPeriod);
             Date beginDate = rset.getDate("beginDate");
-            System.out.println(beginDate);
+            System.out.println("Begin Date: " + beginDate);
             Date endDate = rset.getDate("endDate");
-            System.out.println(endDate);
+            System.out.println("End Date: " + endDate);
             int invoiceID = rset.getInt("invoiceID");
-            System.out.println(invoiceID);
+            System.out.println("Invoice Number: " + invoiceID);
             int placeNum = rset.getInt("placeNum");
-            System.out.println(placeNum);
+            System.out.println("Place Number: " + placeNum);
 
             ++rowCount;
         }
@@ -76,19 +76,19 @@ public class MarshallHousing {
         int rowCount = 0;
         while(rset.next()) {   // Move the cursor to the next row, return false if no more row
             int leaseNum = rset.getInt("leaseNum");
-            System.out.println(leaseNum);
+            System.out.println("Lease Number: " + leaseNum);
             int rentalPeriod = rset.getInt("rentalPeriod");
-            System.out.println(rentalPeriod);
+            System.out.println("Rental Period: " + rentalPeriod);
             Date beginDate = rset.getDate("beginDate");
-            System.out.println(beginDate);
+            System.out.println("Begin Date: " + beginDate);
             Date endDate = rset.getDate("endDate");
-            System.out.println(endDate);
+            System.out.println("End Date: " + endDate);
             int invoiceID = rset.getInt("invoiceID");
-            System.out.println(invoiceID);
+            System.out.println("Invoice Number: " + invoiceID);
             int placeNum = rset.getInt("placeNum");
-            System.out.println(placeNum);
+            System.out.println("Place Number: " + placeNum);
             int muID = rset.getInt("muID");
-            System.out.println(muID);
+            System.out.println("muID: " + muID);
 
             ++rowCount;
         }
@@ -107,7 +107,7 @@ public class MarshallHousing {
         int rowCount = 0;
         while(rset.next()) {   // Move the cursor to the next row, return false if no more row
             String totalRent = rset.getString("totalRent");
-            System.out.println(totalRent);
+            System.out.println("Total rent: " + totalRent);
             ++rowCount;
         }
         System.out.println("Total number of records = " + rowCount);
@@ -117,7 +117,7 @@ public class MarshallHousing {
     public static void nonpaymentDueDate(Statement stmt) throws SQLException{
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDate localDate = LocalDate.now();
-        String select="SELECT s.* FROM Student AS s LEFT JOIN Lease AS l ON s.muID = l.muID JOIN Invoice AS i ON l.leaseNum = i.leaseNum WHERE paymentMade = 'N' AND paymentDateDue <"+ dtf.format(localDate);
+        String select="SELECT s.* FROM Student AS s JOIN Lease AS l ON s.muID = l.muID JOIN Invoice AS i ON l.leaseNum = i.leaseNum WHERE paymentMade = 'N' AND paymentDateDue <"+ dtf.format(localDate);
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -212,7 +212,7 @@ public class MarshallHousing {
     //Present a report listing the details of all students currently on the waiting list for
     //accommodation
     public static void waitingList(Statement stmt) throws SQLException{
-        String select = "SELECT * FROM Student WHERE status = 'true'";
+        String select = "SELECT * FROM Student WHERE status = true";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -274,7 +274,7 @@ public class MarshallHousing {
 
     //Present a report of the names and MU numbers for all students who have not supplied details of their next-of-kin.
     public static void noNextofKin(Statement stmt) throws  SQLException{
-        String select = "SELECT muID, fName, lName FROM Student WHERE muID NOT IN (SELECT muID FROM StudentNextOfKin)";
+        String select = "SELECT muID, fName, lName FROM Student AS S WHERE NOT EXISTS(SELECT * FROM StudentNextOfKin AS k WHERE s.muID = k.muID)";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -358,7 +358,7 @@ public class MarshallHousing {
     //residence staff who are over 60 years old today.
     //TODO finish
     public static void staffOverSixety(Statement stmt) throws SQLException{
-        String select = "Select fName, lName, doB FROM Staff WHERE TIMESTAMPDIFF(YEAR,doB,CURDATE())>= 60";
+        String select = "Select fName, lName, doB,address, TIMESTAMPDIFF(YEAR,doB,CURDATE()) AS age FROM Staff WHERE age>= 60";
 
         ResultSet rset = stmt.executeQuery(select);
         // Step 4: Process the ResultSet by going forward via next().
@@ -366,8 +366,16 @@ public class MarshallHousing {
         System.out.println("The records selected are:");
         int rowCount = 0;
         while(rset.next()) {   // Move the cursor to the next row, return false if no more row
-            String myCount = rset.getString("myCount");
-            System.out.println(myCount);
+            String fName = rset.getString("fName");
+            System.out.println(fName);
+            String lName = rset.getString("lName");
+            System.out.println(lName);
+            String doB = rset.getString("doB");
+            System.out.println(doB);
+            String address = rset.getString("address");
+            System.out.println(address);
+            String age = rset.getString("age");
+            System.out.println(age);
             ++rowCount;
         }
         System.out.println("Total number of records = " + rowCount);
@@ -423,7 +431,7 @@ public class MarshallHousing {
                        "\n15. Display the total number of registered vehicles in the particular parking lot" +
                        "\nQuit - to exit program!");
                choice = in.nextLine();
-               in.next();
+
 
                if(choice.equals("1")){
                    managerNamePhone(stmt);
@@ -477,7 +485,6 @@ public class MarshallHousing {
                else if(choice.equals("15")){
                    System.out.println("Enter a parking lot name: ");
                    String name = in.nextLine();
-                   in.next();
                    totalVehicals(stmt, name);
                }
                else if(choice.equalsIgnoreCase("quit")){
