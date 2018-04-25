@@ -48,7 +48,7 @@ public class MarshallHousing {
             System.out.println("muID: " + muID);
             int leaseNum = rset.getInt("leaseNum");
             System.out.println("Lease Number: " + leaseNum);
-            int rentalPeriod = rset.getInt("rentalPeriod");
+            String rentalPeriod = rset.getString("rentalPeriod");
             System.out.println("Rental Period: " + rentalPeriod);
             Date beginDate = rset.getDate("beginDate");
             System.out.println("Begin Date: " + beginDate);
