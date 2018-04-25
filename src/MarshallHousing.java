@@ -791,7 +791,7 @@ public class MarshallHousing {
                else if(choice.equals("15")){
                    System.out.println("Enter a parking lot name: ");
                    String lotName = in.nextLine();
-                   String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v, ParkingLot AS p WHERE v.lotNum = p.lotNum AND p.lotNme =" + lotName;
+                   String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v, ParkingLot AS p WHERE p.lotNme =" + lotName + " AND v.lotNum = p.lotNum";
 
                    ResultSet rset = stmt.executeQuery(select);
 
