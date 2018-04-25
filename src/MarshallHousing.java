@@ -765,7 +765,7 @@ public class MarshallHousing {
                    System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("14")){
-                   String select = "Select fName, lName, doB,address, TIMESTAMPDIFF(YEAR,doB,CURDATE()) AS age FROM Staff WHERE age>= 60";
+                   String select = "Select fName, lName, doB,address, TIMESTAMPDIFF(YEAR,doB,CURDATE()) AS age, FROM Staff WHERE age>= 60";
 
                    ResultSet rset = stmt.executeQuery(select);
                    // Step 4: Process the ResultSet by going forward via next().
