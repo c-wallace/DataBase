@@ -8,7 +8,7 @@ import java.util.Date;
 public class MarshallHousing {
 
     //Present a report listing the Manager’s name and telephone number for each hall of residence.
-    private static void managerNamePhone(Statement stmt) throws SQLException {
+    /*private static void managerNamePhone(Statement stmt) throws SQLException {
         String select = "select s.fName, s.lName, h.phoneNum from Staff As s, HallResidence As h WHERE s.staffID = h.staffID GROUP BY h.name";
 
         ResultSet rset = stmt.executeQuery(select);
@@ -161,7 +161,7 @@ public class MarshallHousing {
 
     //Display the details of apartment inspections where the property was found to be in an unsatisfactory condition.
     public static void unSatsifatoryApartments(Statement stmt) throws SQLException{
-        String select = "SELECT * FROM Inspection WHERE roomCondition = 'bad'";
+        String select = "SELECT * FROM Inspection WHERE condtion = 'unsatisfactory'";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -170,11 +170,11 @@ public class MarshallHousing {
         System.out.println("The records selected are:");
         int rowCount = 0;
         while(rset.next()) {   // Move the cursor to the next row, return false if no more row
-            int inspectionNum = rset.getInt("inspectionNum");
-            System.out.println(inspectionNum);
+            int insepctionNum = rset.getInt("insepctionNum");
+            System.out.println(insepctionNum);
             Date date = rset.getDate("date");
             System.out.println(date);
-            String condtion = rset.getString("roomCondition");
+            String condtion = rset.getString("condition");
             System.out.println(condtion);
             String comments = rset.getString("comments");
             System.out.println(comments);
@@ -185,7 +185,7 @@ public class MarshallHousing {
 
     //Present a report of the names and MU numbers of students with their room number and place number in a particular hall of residence
     public static void studentFromHall(Statement stmt, String hallName) throws SQLException{
-        String select ="SELECT s.fName, s.lName, s.muID, Room.placeNum, Room.roomNum FROM HallResidence AS h WHERE h.name='"+hallName+"'LEFT JOIN Accommendation ON Accommendation.accmID = h.accmID LEFT JOIN Room ON Room.accmID = Accommendation.accmID LEFT JOIN Lease ON Lease.placeNum = Room.placeNum JOIN Student AS s ON s.muID = Lease.muID";
+        String select ="SELECT s.fName, s.lName, s.muID, Room.placeNum, Room.roomNum FROM Student AS s JOIN Lease ON s.muID = Lease.muID, JOIN Room ON Lease.placeNum = Room.placeNum, JOIN Accomendation ON Room.accmID = Accommendation.accmID, JOIN HallResidence ON Accomedation.accmID = HaLlResidence.accmID WHERE HallResidence.name ="+ hallName;
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -208,7 +208,7 @@ public class MarshallHousing {
         }
         System.out.println("Total number of records = " + rowCount);
     }
-    
+
     //Present a report listing the details of all students currently on the waiting list for
     //accommodation
     public static void waitingList(Statement stmt) throws SQLException{
@@ -315,8 +315,8 @@ public class MarshallHousing {
     }
 
     //12. Display the minimum, maximum, and average monthly rent for rooms in residence halls
-    public static void statsRent(Statement stmt) throws SQLException{
-        String select ="SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN accomedation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
+    public static void statsRent(Statement stmt) throws SQLException {
+        String select = "SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN accomedation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -324,7 +324,7 @@ public class MarshallHousing {
         //  For each row, retrieve the contents of the cells with getXxx(columnName).
         System.out.println("The records selected are:");
         int rowCount = 0;
-        while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+        while (rset.next()) {   // Move the cursor to the next row, return false if no more row
             String myAvg = rset.getString("myAvg");
             System.out.println(myAvg);
             String myMax = rset.getString("myMax");
@@ -333,7 +333,7 @@ public class MarshallHousing {
             System.out.println(myMin);
             ++rowCount;
         }
-        }
+    }
 
         //Display the total number of places in each residence hall.
     public static void totalRooms(Statement stmt) throws SQLException{
@@ -382,7 +382,7 @@ public class MarshallHousing {
 
     //Display the total number of registered vehicles in the particular parking lot.
     public static void totalVehicals(Statement stmt, String lotName) throws SQLException{
-        String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotNme= '" + lotName;
+        String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotNme=" + lotName;
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -395,9 +395,8 @@ public class MarshallHousing {
             System.out.println(total);
             ++rowCount;
         }
-        
         System.out.println("Total number of records = " + rowCount);
-    }
+    }*/
 
     public static void main(String[] args){
         Scanner in = new Scanner(System.in);
@@ -434,58 +433,379 @@ public class MarshallHousing {
 
 
                if(choice.equals("1")){
-                   managerNamePhone(stmt);
+                   String select = "select s.fName, s.lName, h.phoneNum from Staff As s, HallResidence As h WHERE s.staffID = h.staffID GROUP BY h.name";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String fName = rset.getString("fName");
+                       System.out.println("First Name: " + fName);
+                       String lName = rset.getString("lName");
+                       System.out.println("Last Name: "+ lName);
+                       String phoneNum = rset.getString("phoneNum");
+                       System.out.println("Phone Number: " + phoneNum);
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("2")){
-                   studentLeaseInfo(stmt);
+                   String select = "SELECT s.fName, s.lName, s.muID, l.* FROM Student AS s, Lease AS l WHERE s.muID = l.muID";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String fName = rset.getString("fName");
+                       System.out.println("First Name: " + fName);
+                       String lName = rset.getString("lName");
+                       System.out.println("Last Name: " + lName);
+                       int muID = rset.getInt("muID");
+                       System.out.println("muID: " + muID);
+                       int leaseNum = rset.getInt("leaseNum");
+                       System.out.println("Lease Number: " + leaseNum);
+                       String rentalPeriod = rset.getString("rentalPeriod");
+                       System.out.println("Rental Period: " + rentalPeriod);
+                       Date beginDate = rset.getDate("beginDate");
+                       System.out.println("Begin Date: " + beginDate);
+                       Date endDate = rset.getDate("endDate");
+                       System.out.println("End Date: " + endDate);
+                       int invoiceID = rset.getInt("invoiceID");
+                       System.out.println("Invoice Number: " + invoiceID);
+                       int placeNum = rset.getInt("placeNum");
+                       System.out.println("Place Number: " + placeNum);
+                       System.out.println();
+
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("3")){
-                   summerLeases(stmt);
+                   String select = "SELECT * FROM Lease WHERE rentalPeriod = 'Year'";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       int leaseNum = rset.getInt("leaseNum");
+                       System.out.println("Lease Number: " + leaseNum);
+                       int rentalPeriod = rset.getInt("rentalPeriod");
+                       System.out.println("Rental Period: " + rentalPeriod);
+                       Date beginDate = rset.getDate("beginDate");
+                       System.out.println("Begin Date: " + beginDate);
+                       Date endDate = rset.getDate("endDate");
+                       System.out.println("End Date: " + endDate);
+                       int invoiceID = rset.getInt("invoiceID");
+                       System.out.println("Invoice Number: " + invoiceID);
+                       int placeNum = rset.getInt("placeNum");
+                       System.out.println("Place Number: " + placeNum);
+                       int muID = rset.getInt("muID");
+                       System.out.println("muID: " + muID);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("4")){
                    System.out.println("Enter muID of Student: ");
                    int muID = in.nextInt();
-                   totalRent(stmt, muID);
+                   String select = "SELECT SUM(rentRate) AS totalRent FROM Student AS s LEFT JOIN Lease AS l ON s.muID="+muID+" AND "+muID+"=l.muID JOIN Room AS r ON r.placeNum = l.placeNum";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String totalRent = rset.getString("totalRent");
+                       System.out.println("Total rent: " + totalRent);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("5")){
-                   nonpaymentDueDate(stmt);
+                   DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
+                   LocalDate localDate = LocalDate.now();
+                   String select="SELECT s.* FROM Student AS s JOIN Lease AS l ON s.muID = l.muID JOIN Invoice AS i ON l.leaseNum = i.leaseNum WHERE paymentMade = 'N' AND paymentDate <"+ dtf.format(localDate);
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       int muID = rset.getInt("muID");
+                       System.out.println("MUID: " + muID);
+                       int advisorID = rset.getInt("advisorID");
+                       System.out.println(advisorID);
+                       String fName = rset.getString("fName");
+                       System.out.println("First Name: " + fName);
+                       String lName = rset.getString("lName");
+                       System.out.println("Last Name: " + lName);
+                       String phoneNum = rset.getString("phoneNum");
+                       System.out.println("Phone Number: " + phoneNum);
+                       String email = rset.getString("email");
+                       System.out.println("Email: " + email);
+                       String doB = rset.getString("doB");
+                       System.out.println("Date of Birth: " + doB);
+                       String gender = rset.getString("gender");
+                       System.out.println("Gender: " + gender);
+                       String year = rset.getString("year");
+                       System.out.println("Year: " + year);
+                       String nationality = rset.getString("nationality");
+                       System.out.println("Nationality: " + nationality);
+                       String specialNeeds = rset.getString("specialNeeds");
+                       System.out.println("Special Needs: " + specialNeeds);
+                       String major = rset.getString("major");
+                       System.out.println("Major: " + major);
+                       String minor = rset.getString("minor");
+                       System.out.println("Minor: " + minor);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("6")){
-                   unSatsifatoryApartments(stmt);
+                   String select = "SELECT * FROM Inspection WHERE roomCondition = 'bad'";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       int insepctionNum = rset.getInt("insepctionNum");
+                       System.out.println("Inspection Number: " + insepctionNum);
+                       Date date = rset.getDate("date");
+                       System.out.println("Date: " + date);
+                       String condtion = rset.getString("roomCondition");
+                       System.out.println("Condition: " + condtion);
+                       String comments = rset.getString("comments");
+                       System.out.println("Comments: " + comments);
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("7")){
                    System.out.println("Enter a residence hall name: ");
                    String name = in.nextLine();
                    in.next();
-                   studentFromHall(stmt, name);
+                   String select ="SELECT s.fName, s.lName, s.muID, Room.placeNum, Room.roomNum FROM Student AS s JOIN Lease ON s.muID = Lease.muID, JOIN Room ON Lease.placeNum = Room.placeNum, JOIN accomedation ON Room.accmID = accomedation.accmID, JOIN HallResidence ON accomedation.accmID = HaLlResidence.accmID WHERE HallResidence.name ="+ name;
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected for" + name + " are: ");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       int muID = rset.getInt("muID");
+                       System.out.println("MUID: " + muID);
+                       String fName = rset.getString("fName");
+                       System.out.println("First Name: " + fName);
+                       String lName = rset.getString("lName");
+                       System.out.println("Last Name: " + lName);
+                       int placeNum = rset.getInt("placeNum");
+                       System.out.println("Place Number: " + placeNum);
+                       int roomNum = rset.getInt("roomNum");
+                       System.out.println("Room Number: " + roomNum);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("8")){
-                   waitingList(stmt);
+                   String select = "SELECT * FROM Student WHERE status = 'Waiting'";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       int muID = rset.getInt("muID");
+                       System.out.println("MUID: " + muID);
+                       String fName = rset.getString("fName");
+                       System.out.println("First Name: " + fName);
+                       String lName = rset.getString("lName");
+                       System.out.println("Last Name: " + lName);
+                       String phoneNum = rset.getString("phoneNum");
+                       System.out.println("Phone Number: " + phoneNum);
+                       String email = rset.getString("email");
+                       System.out.println("Email: " + email);
+                       String doB = rset.getString("doB");
+                       System.out.println("Date of Birth: " + doB);
+                       String gender = rset.getString("gender");
+                       System.out.println("Gender: " + gender);
+                       String year = rset.getString("year");
+                       System.out.println("Year: " + year);
+                       String nationality = rset.getString("nationality");
+                       System.out.println("Nationality: " + nationality);
+                       String specialNeeds = rset.getString("specialNeeds");
+                       System.out.println("Special Needs: " + specialNeeds);
+                       String major = rset.getString("major");
+                       System.out.println("Major: " + major);
+                       String minor = rset.getString("minor");
+                       System.out.println("Minor: " + minor);
+                       int advisorID = rset.getInt("advisorID");
+                       System.out.println("Advisor ID: " + advisorID);
+                       System.out.println();
+
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("9")){
-                   totalStudentYear(stmt);
+                   String select = "SELECT COUNT(year) AS myCount FROM Student GROUP BY year";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String myCount = rset.getString("myCount");
+                       System.out.println("MyCount: " + myCount);
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("10")){
-                   noNextofKin(stmt);
+                   String select = "SELECT muID, fName, lName FROM Student AS S WHERE NOT EXISTS(SELECT * FROM StudentNextOfKin AS k WHERE s.muID = k.muID)";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       int muID = rset.getInt("muID");
+                       System.out.println("MUID: " + muID);
+                       String fName = rset.getString("fName");
+                       System.out.println("First Name: " + fName);
+                       String lName = rset.getString("lName");
+                       System.out.println("Last Night: " + lName);
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("11")){
                    System.out.println("Enter muID of Student: ");
                    int muID = in.nextInt();
-                   advisorStudent(stmt, muID);
+                   String select = "SELECT a.fullName, a.officePhone FROM Advisor AS a JOIN Student AS s ON s.advisorID = a.advisorID WHERE s.muID ="+muID;
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String fullName = rset.getString("fullName");
+                       System.out.println("Full Name: " + fullName);
+                       String officePhone = rset.getString("officePhone");
+                       System.out.println("Office Phone: " + officePhone);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("12")){
-                   statsRent(stmt);
+                   String select = "SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN accomedation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while (rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String myAvg = rset.getString("myAvg");
+                       System.out.println("Average: " + myAvg);
+                       String myMax = rset.getString("myMax");
+                       System.out.println("Max: " + myMax);
+                       String myMin = rset.getString("myMin");
+                       System.out.println("Min: " + myMin);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("13")){
-                   totalRooms(stmt);
+                   String select = "SELECT COUNT(roomNum) AS myCount FROM Room AS r JOIN accomedation AS a ON a.accmID = r.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP  BY h.name";
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String myCount = rset.getString("myCount");
+                       System.out.println("myCount: " + myCount);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("14")){
-                   staffOverSixety(stmt);
+                   String select = "Select fName, lName, doB,address, TIMESTAMPDIFF(YEAR,doB,CURDATE()) AS age FROM Staff WHERE age>= 60";
+
+                   ResultSet rset = stmt.executeQuery(select);
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected are:");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String fName = rset.getString("fName");
+                       System.out.println("First Name: " + fName);
+                       String lName = rset.getString("lName");
+                       System.out.println("Last Night: " + lName);
+                       String doB = rset.getString("doB");
+                       System.out.println("Date of Birth: " + doB);
+                       String address = rset.getString("address");
+                       System.out.println("Address: " + address);
+                       String age = rset.getString("age");
+                       System.out.println("Age: " + age);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("15")){
                    System.out.println("Enter a parking lot name: ");
-                   String name = in.nextLine();
-                   totalVehicals(stmt, name);
+                   String lotName = in.nextLine();
+                   String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotNme=" + lotName;
+
+                   ResultSet rset = stmt.executeQuery(select);
+
+                   // Step 4: Process the ResultSet by going forward via next().
+                   //  For each row, retrieve the contents of the cells with getXxx(columnName).
+                   System.out.println("The records selected for " + lotName + " are: ");
+                   int rowCount = 0;
+                   while(rset.next()) {   // Move the cursor to the next row, return false if no more row
+                       String total = rset.getString("totalVehicle");
+                       System.out.println("Total: " + total);
+                       System.out.println();
+                       ++rowCount;
+                   }
+                   System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equalsIgnoreCase("quit")){
                    System.out.println("Goodbye!");
