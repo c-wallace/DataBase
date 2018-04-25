@@ -765,7 +765,7 @@ public class MarshallHousing {
                    System.out.println("Total number of records = " + rowCount);
                }
                else if(choice.equals("14")){
-                   String select = "Select fName, lName, doB,address, TIMESTAMPDIFF(YEAR,doB,CURDATE()) AS age, FROM Staff WHERE age>= 60";
+                   String select = "Select fName, lName, doB,address, TIMESTAMPDIFF(YEAR,doB,CURDATE()) AS age FROM Staff WHERE age>= 60";
 
                    ResultSet rset = stmt.executeQuery(select);
                    // Step 4: Process the ResultSet by going forward via next().
@@ -791,7 +791,7 @@ public class MarshallHousing {
                else if(choice.equals("15")){
                    System.out.println("Enter a parking lot name: ");
                    String lotName = in.nextLine();
-                   String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotNme=" + lotName;
+                   String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v, ParkingLot AS p WHERE v.lotNum = p.lotNum AND p.lotNme =" + lotName;
 
                    ResultSet rset = stmt.executeQuery(select);
 
