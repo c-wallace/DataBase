@@ -402,11 +402,11 @@ public class MarshallHousing {
         try (
                 // Step 1: Allocate a database 'Connection' object
                 Connection conn = DriverManager.getConnection(
-                        "jdbc:mysql://172.16.208.2:3306/Housing", "Anthony", "R4ch3lR0s3");
+                		"jdbc:mysql://localhost:3306/Housing", "root", "1234");
                 // MySQL: "jdbc:mysql://hostname:port/databaseName", "username", "password"
 
                 // Step 2: Allocate a 'Statement' object in the Connection
-                Statement stmt = conn.createStatement();
+                Statement stmt = conn.createStatement()
         ) {
            String choice = "";
 
