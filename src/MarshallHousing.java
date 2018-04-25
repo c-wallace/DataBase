@@ -117,7 +117,7 @@ public class MarshallHousing {
     public static void nonpaymentDueDate(Statement stmt) throws SQLException{
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
         LocalDate localDate = LocalDate.now();
-        String select="SELECT s.* FROM Student AS s JOIN Lease AS l ON s.muID = l.muID JOIN Invoice AS i ON l.leaseNum = i.leaseNum WHERE paymentMade = 'N' AND paymentDateDue <"+ dtf.format(localDate);
+        String select="SELECT s.* FROM Student AS s JOIN Lease AS l ON s.muID = l.muID JOIN Invoice AS i ON l.leaseNum = i.leaseNum WHERE paymentMade = 'N' AND paymentDate <"+ dtf.format(localDate);
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -185,7 +185,7 @@ public class MarshallHousing {
 
     //Present a report of the names and MU numbers of students with their room number and place number in a particular hall of residence
     public static void studentFromHall(Statement stmt, String hallName) throws SQLException{
-        String select ="SELECT s.fName, s.lName, s.muID, r.placeNum, r.roomNum FROM HallResidence AS h WHERE h.name="+hallName+" JOIN Accommendation as A ON A.accmID = h.accmID JOIN Room AS r ON r.accmID = A.accmID JOIN Lease AS l ON l.placeNum = r.placeNum JOIN Student AS s ON s.muID = l.muID";
+        String select ="SELECT s.fName, s.lName, s.muID, r.placeNum, r.roomNum FROM HallResidence AS h WHERE h.name='"+hallName+"'LEFT JOIN Accommendation ON Accommendation.accmID = h.accmID LEFT JOIN Room ON Room.accmID = Accommendation.accmID LEFT JOIN Lease ON Lease.placeNum = Room.placeNum JOIN Student AS s ON s.muID = Lease.muID";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -212,7 +212,7 @@ public class MarshallHousing {
     //Present a report listing the details of all students currently on the waiting list for
     //accommodation
     public static void waitingList(Statement stmt) throws SQLException{
-        String select = "SELECT * FROM Student WHERE status = true";
+        String select = "SELECT * FROM Student WHERE status = 'Waiting'";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -296,7 +296,7 @@ public class MarshallHousing {
 
     // Display the name and internal telephone number of the Advisor for a particular student.
     public static void advisorStudent(Statement stmt, int muID) throws SQLException{
-        String select = "SELECT a.fullName. a.officePhone FROM Advisor AS a JOIN Student AS s ON s.advisorID = a.advisorID WHERE s.muID ="+muID;
+        String select = "SELECT a.fullName, a.officePhone FROM Advisor AS a JOIN Student AS s ON s.advisorID = a.advisorID WHERE s.muID ="+muID;
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -382,7 +382,7 @@ public class MarshallHousing {
 
     //Display the total number of registered vehicles in the particular parking lot.
     public static void totalVehicals(Statement stmt, String lotName) throws SQLException{
-        String select = "SELECT COUNT(vin) AS totalVehicle FROM Vechicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotName= " + lotName;
+        String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotNme= " + lotName;
 
         ResultSet rset = stmt.executeQuery(select);
 
