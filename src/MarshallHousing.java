@@ -161,7 +161,7 @@ public class MarshallHousing {
 
     //Display the details of apartment inspections where the property was found to be in an unsatisfactory condition.
     public static void unSatsifatoryApartments(Statement stmt) throws SQLException{
-        String select = "SELECT * FROM Inspection WHERE condtion = 'unsatisfactory'";
+        String select = "SELECT * FROM Inspection WHERE roomCondition = 'bad'";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -170,11 +170,11 @@ public class MarshallHousing {
         System.out.println("The records selected are:");
         int rowCount = 0;
         while(rset.next()) {   // Move the cursor to the next row, return false if no more row
-            int insepctionNum = rset.getInt("insepctionNum");
-            System.out.println(insepctionNum);
+            int inspectionNum = rset.getInt("inspectionNum");
+            System.out.println(inspectionNum);
             Date date = rset.getDate("date");
             System.out.println(date);
-            String condtion = rset.getString("condition");
+            String condtion = rset.getString("roomCondition");
             System.out.println(condtion);
             String comments = rset.getString("comments");
             System.out.println(comments);
@@ -208,7 +208,7 @@ public class MarshallHousing {
         }
         System.out.println("Total number of records = " + rowCount);
     }
-
+    
     //Present a report listing the details of all students currently on the waiting list for
     //accommodation
     public static void waitingList(Statement stmt) throws SQLException{
@@ -315,8 +315,8 @@ public class MarshallHousing {
     }
 
     //12. Display the minimum, maximum, and average monthly rent for rooms in residence halls
-    public static void statsRent(Statement stmt) throws SQLException {
-        String select = "SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN accomedation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
+    public static void statsRent(Statement stmt) throws SQLException{
+        String select ="SELECT AVG(rentRate) AS myAvg, MAX(rentRate) AS myMax, MIN(rentRate) AS myMin FROM Room AS r JOIN accomedation AS a ON r.accmID = a.accmID JOIN HallResidence AS h ON a.accmID = h.accmID GROUP BY h.name";
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -324,7 +324,7 @@ public class MarshallHousing {
         //  For each row, retrieve the contents of the cells with getXxx(columnName).
         System.out.println("The records selected are:");
         int rowCount = 0;
-        while (rset.next()) {   // Move the cursor to the next row, return false if no more row
+        while(rset.next()) {   // Move the cursor to the next row, return false if no more row
             String myAvg = rset.getString("myAvg");
             System.out.println(myAvg);
             String myMax = rset.getString("myMax");
@@ -333,7 +333,7 @@ public class MarshallHousing {
             System.out.println(myMin);
             ++rowCount;
         }
-    }
+        }
 
         //Display the total number of places in each residence hall.
     public static void totalRooms(Statement stmt) throws SQLException{
@@ -382,7 +382,7 @@ public class MarshallHousing {
 
     //Display the total number of registered vehicles in the particular parking lot.
     public static void totalVehicals(Statement stmt, String lotName) throws SQLException{
-        String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotNme= " + lotName;
+        String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v JOIN ParkingLot AS p ON v.lotNum=p.lotNum WHERE p.lotNme= '" + lotName;
 
         ResultSet rset = stmt.executeQuery(select);
 
@@ -395,6 +395,7 @@ public class MarshallHousing {
             System.out.println(total);
             ++rowCount;
         }
+        
         System.out.println("Total number of records = " + rowCount);
     }
 
