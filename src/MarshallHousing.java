@@ -603,7 +603,7 @@ public class MarshallHousing {
                    System.out.println("Enter a residence hall name: ");
                    String name = in.nextLine();
                    in.next();
-                   String select ="SELECT s.fName, s.lName, s.muID, Room.placeNum, Room.roomNum FROM Student AS s JOIN Lease ON s.muID = Lease.muID, JOIN Room ON Lease.placeNum = Room.placeNum, JOIN accomedation ON Room.accmID = accomedation.accmID, JOIN HallResidence ON accomedation.accmID = HaLlResidence.accmID WHERE HallResidence.name ="+ name;
+                   String select ="SELECT s.fName, s.lName, s.muID, Room.placeNum, Room.roomNum FROM Student AS s INNER JOIN Lease ON s.muID = Lease.muID, INNER JOIN Room ON Lease.placeNum = Room.placeNum, INNER JOIN accomedation ON Room.accmID = accomedation.accmID, INNER JOIN HallResidence ON accomedation.accmID = HaLlResidence.accmID WHERE HallResidence.name ="+ name;
 
                    ResultSet rset = stmt.executeQuery(select);
 
