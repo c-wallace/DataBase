@@ -601,8 +601,7 @@ public class MarshallHousing {
                }
                else if(choice.equals("7")){
                    System.out.println("Enter a residence hall name: ");
-                   String name = in.nextLine();
-                   in.next();
+                   String name = in.next();
                    String select ="SELECT s.fName, s.lName, s.muID, Room.placeNum, Room.roomNum FROM Student AS s INNER JOIN Lease ON s.muID = Lease.muID, INNER JOIN Room ON Lease.placeNum = Room.placeNum, INNER JOIN accomedation ON Room.accmID = accomedation.accmID, INNER JOIN HallResidence ON accomedation.accmID = HaLlResidence.accmID WHERE HallResidence.name ="+ name;
 
                    ResultSet rset = stmt.executeQuery(select);
@@ -788,7 +787,7 @@ public class MarshallHousing {
                }
                else if(choice.equals("15")){
                    System.out.println("Enter a parking lot name: ");
-                   String lotName = in.nextLine();
+                   String lotName = in.next();
                    String select = "SELECT COUNT(vin) AS totalVehicle FROM Vehicle AS v, LEFT JOIN ParkingLot AS p ON v.lotNum = p.lotNum WHERE p.lotNme =" + lotName;
 
                    ResultSet rset = stmt.executeQuery(select);
